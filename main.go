@@ -12,7 +12,6 @@ func main() {
 		"c",
 		"d",
 		"e",
-		"f",
 	}
 
 	for _, fileName := range files {
