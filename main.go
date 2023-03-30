@@ -20,6 +20,7 @@ func main() {
 		inputSet := readFile(fmt.Sprintf("./inputFiles/%s.in", fileName))
 
 		config := buildInput(inputSet)
+		fmt.Printf("CONFIG %+v\n", config)
 		printInputMetrics(config)
 
 		result := algorithm(config)
