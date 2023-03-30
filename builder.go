@@ -52,6 +52,23 @@ func buildInput(inputSet string) *Config {
 		config.photosMap[id] = &photo
 	}
 
+	tagsScores := make(map[string]int)
+	for _, photo := range config.photoList {
+		for _, tag := range photo.Tags {
+			tagScore, _ := tagsScores[tag]
+			tagScore++
+			tagsScores[tag] = tagScore
+		}
+	}
+	for _, photo := range config.photoList {
+		photoScore := 0
+		for _, tag := range photo.Tags {
+			tagScore := tagsScores[tag]
+			photoScore += tagScore
+		}
+		photo.Score = photoScore
+	}
+
 	return config
 }
 
