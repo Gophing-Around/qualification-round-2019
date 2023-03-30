@@ -41,7 +41,7 @@ func algorithm(
 	partialSlideIndex := -1
 
 	minThreshold := 10
-
+	MAX_ACCEPTED_COMMON_VERTICAL_PHOTOS := 2
 	maxIterations := len(photoList)
 	currentIterations := 0
 	for len(photoList) > 0 {
@@ -64,6 +64,19 @@ func algorithm(
 
 			previousSlideTags := lo.Uniq(lo.Union(slidePhotoA.Tags, tagsB))
 			currentPhotoTags := photo.Tags
+
+			previousPhotoTagsOfPartialSlide := []string{}
+			if partialSlideIndex > 0 {
+				previousPartialSlidePhotoId := slideShow.slides[partialSlideIndex][0]
+				previousPartialSlidePhoto := config.photosMap[previousPartialSlidePhotoId]
+				previousPhotoTagsOfPartialSlide = previousPartialSlidePhoto.Tags
+				tagsIntersectionWithCurrentPhoto := lo.Intersect(previousPhotoTagsOfPartialSlide, currentPhotoTags)
+
+				if len(tagsIntersectionWithCurrentPhoto) > MAX_ACCEPTED_COMMON_VERTICAL_PHOTOS && currentIterations < maxIterations {
+					photoList = append(photoList, photo)
+					continue
+				}
+			}
 
 			tagsIntersect := lo.Intersect(currentPhotoTags, previousSlideTags)
 
