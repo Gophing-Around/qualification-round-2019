@@ -102,37 +102,36 @@ func algorithm(
 	// 	}
 	// }
 
-	sort.Slice(slideShow.slides, func(i, j int) bool {
-		slideItemA := slideShow.slides[i]
-		slideItemB := slideShow.slides[j]
+	// sort.Slice(slideShow.slides, func(i, j int) bool {
+	// 	slideItemA := slideShow.slides[i]
+	// 	slideItemB := slideShow.slides[j]
 
-		tagA0 := config.photosMap[slideItemA[0]].Tags
-		tagB0 := config.photosMap[slideItemB[0]].Tags
+	// 	tagA0 := config.photosMap[slideItemA[0]].Tags
+	// 	tagB0 := config.photosMap[slideItemB[0]].Tags
 
-		tagA1 := make([]string, 0)
-		if len(slideItemA) > 1 {
-			tagA1 = config.photosMap[slideItemA[1]].Tags
-		}
-		tagB1 := make([]string, 0)
-		if len(slideItemB) > 1 {
-			tagB1 = config.photosMap[slideItemB[1]].Tags
-		}
+	// 	tagA1 := make([]string, 0)
+	// 	if len(slideItemA) > 1 {
+	// 		tagA1 = config.photosMap[slideItemA[1]].Tags
+	// 	}
+	// 	tagB1 := make([]string, 0)
+	// 	if len(slideItemB) > 1 {
+	// 		tagB1 = config.photosMap[slideItemB[1]].Tags
+	// 	}
 
-		tagsSlideA := lo.Uniq(lo.Union(tagA0, tagA1))
-		tagsSlideB := lo.Uniq(lo.Union(tagB0, tagB1))
+	// 	tagsSlideA := lo.Uniq(lo.Union(tagA0, tagA1))
+	// 	tagsSlideB := lo.Uniq(lo.Union(tagB0, tagB1))
 
-		equalTags := len(lo.Intersect(tagsSlideA, tagsSlideB))
-		onlyATags := len(tagsSlideA) - equalTags
-		onlyBTags := len(tagsSlideB) - equalTags
+	// 	equalTags := len(lo.Intersect(tagsSlideA, tagsSlideB))
+	// 	onlyATags := len(tagsSlideA) - equalTags
+	// 	onlyBTags := len(tagsSlideB) - equalTags
 
-		return onlyATags+onlyBTags+equalTags/3 > 1
-	})
+	// 	return onlyATags+onlyBTags+equalTags/3 > 1
+	// })
 	return &slideShow
 }
 
 func algorithmQueue(
 	config *Config,
-
 ) *SlideShow {
 	photoList := config.photoList
 
