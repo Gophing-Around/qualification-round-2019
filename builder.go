@@ -60,13 +60,15 @@ func buildInput(inputSet string) *Config {
 			tagsScores[tag] = tagScore
 		}
 	}
+
 	for _, photo := range config.photoList {
 		photoScore := 0
 		for _, tag := range photo.Tags {
 			tagScore := tagsScores[tag]
 			photoScore += tagScore
 		}
-		photo.Score = photoScore
+		photo.Score = (photoScore / photo.NTags)
+		// fmt.Printf("PHOTO#%d - score %d tags: %d\n", id, photo.Score, photo.NTags)
 	}
 
 	return config
