@@ -6,6 +6,9 @@ import (
 )
 
 func main() {
+	new_main()
+	return
+
 	files := []string{
 		"a",
 		"b",
