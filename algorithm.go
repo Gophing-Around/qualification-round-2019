@@ -2,6 +2,8 @@ package main
 
 import (
 	"sort"
+
+	"github.com/samber/lo"
 )
 
 func algorithm(
@@ -25,10 +27,16 @@ func algorithm(
 	// })
 
 	sort.Slice(photoList, func(i, j int) bool {
-		photoA := photoList[i]
-		photoB := photoList[j]
+		tagsPhotoA := photoList[i].Tags
+		tagsPhotoB := photoList[j].Tags
 
-		return photoA.NTags < photoB.NTags
+		tagIntersection := lo.Intersect(tagsPhotoA, tagsPhotoB)
+		tagDiffA, tagDiffB := lo.Difference(tagsPhotoA, tagsPhotoB)
+
+		ntagIntersection := len(tagIntersection)
+		ntagDiffA := len(tagDiffA)
+		ntagDiffB := len(tagDiffB)
+		return photoA < photoB
 	})
 
 	slideShow := SlideShow{
