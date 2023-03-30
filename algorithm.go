@@ -10,18 +10,25 @@ func algorithm(
 
 	photoList := config.photoList
 
-	sort.Slice(photoList, func(a, b int) bool {
-		photoA := photoList[a]
-		photoB := photoList[b]
+	// sort.Slice(photoList, func(a, b int) bool {
+	// 	photoA := photoList[a]
+	// 	photoB := photoList[b]
 
-		if photoA.Layout == "H" && photoB.Layout == "H" {
-			return true
-		}
+	// 	if photoA.Layout == "H" && photoB.Layout == "H" {
+	// 		return true
+	// 	}
 
-		if photoA.Layout == "H" && photoB.Layout == "V" {
-			return true
-		}
-		return false
+	// 	if photoA.Layout == "H" && photoB.Layout == "V" {
+	// 		return true
+	// 	}
+	// 	return false
+	// })
+
+	sort.Slice(photoList, func(i, j int) bool {
+		photoA := photoList[i]
+		photoB := photoList[j]
+
+		return photoA.NTags < photoB.NTags
 	})
 
 	slideShow := SlideShow{
@@ -29,6 +36,7 @@ func algorithm(
 	}
 
 	slideIndex := 0
+	partialSlideIndex := -1
 
 	for i := 0; i < len(photoList); i++ {
 		// 	fmt.Printf(photoList[i].Layout)
@@ -37,26 +45,17 @@ func algorithm(
 			slideShow.slides = append(slideShow.slides, []int{photo.ID})
 			slideIndex++
 		} else {
-			var photoB *Photo
-			if i < len(photoList) {
-				photoB = photoList[i+1]
+			if partialSlideIndex < 0 {
+				newslide := []int{photo.ID}
+				slideShow.slides = append(slideShow.slides, newslide)
+				partialSlideIndex = slideIndex
+				slideIndex++
+				continue
 			}
 
-			newslide := []int{photo.ID}
-			if photoB != nil {
-				newslide = append(newslide, photoB.ID)
-			}
-			slideShow.slides = append(slideShow.slides, newslide)
-			i++
-			// slide := slideShow.slides[slideIndex]
-			// if len(slide) >= 2 {
-			// 	slideIndex++
-			// }
-
-			// if len(slide) == 0 {
-			// 	slide = make([]int,0)
-			// }
-			// slide = append(slide, photo.ID)
+			// fmt.Printf("FOOOO %v %+v %d", partialSlideIndex, slideShow.slides, slideIndex)
+			slideShow.slides[partialSlideIndex] = append(slideShow.slides[partialSlideIndex], photo.ID)
+			partialSlideIndex = -1
 		}
 	}
 
