@@ -6,7 +6,7 @@ import (
 	"github.com/samber/lo"
 )
 
-func algorithm(
+func _algorithm(
 	config *Config,
 ) *SlideShow {
 
@@ -206,7 +206,7 @@ func algorithm(
 	return &slideShow
 }
 
-func algorithmQueue(
+func _algorithmQueue(
 	config *Config,
 ) *SlideShow {
 	photoList := config.photoList

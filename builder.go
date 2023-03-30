@@ -15,9 +15,17 @@ type Photo struct {
 }
 
 type Config struct {
-	nPhotos   int
-	photoList []*Photo
-	photosMap map[int]*Photo
+	nPhotos    int
+	photoList  []*Photo
+	photosMap  map[int]*Photo
+	tagsMap    map[string][]*Photo
+	listTags   []*Tags
+	tagsScores map[string]int
+}
+
+type Tags struct {
+	name   string
+	photos []*Photo
 }
 
 type SlideShow struct {
@@ -58,6 +66,8 @@ func buildInput(inputSet string) *Config {
 
 	tagsScoresFloating := make(map[string]float64)
 	tagsScores := make(map[string]int)
+	tagsMap := make(map[string][]*Photo)
+	listTags := make([]*Tags, 0)
 	for _, photo := range config.photoList {
 		for _, tag := range photo.Tags {
 			tagScore, _ := tagsScores[tag]
@@ -67,8 +77,24 @@ func buildInput(inputSet string) *Config {
 			tagScoreFloating, _ := tagsScoresFloating[tag]
 			tagScoreFloating += (float64(1) / float64(len(config.photoList)))
 			tagsScoresFloating[tag] = tagScoreFloating
+
+			if tagsMap[tag] == nil {
+				tagsMap[tag] = []*Photo{}
+			}
+			tagsMap[tag] = append(tagsMap[tag], photo)
 		}
 	}
+
+	for tag, photo := range tagsMap {
+		listTags = append(listTags, &Tags{
+			name:   tag,
+			photos: photo,
+		})
+	}
+
+	config.listTags = listTags
+	config.tagsMap = tagsMap
+	config.tagsScores = tagsScores
 
 	for _, photo := range config.photoList {
 		photoThreshold := 0.0
