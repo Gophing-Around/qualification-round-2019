@@ -78,7 +78,11 @@ func algorithm(
 		tagsSlideA := lo.Uniq(lo.Union(tagA0, tagA1))
 		tagsSlideB := lo.Uniq(lo.Union(tagB0, tagB1))
 
-		return len(tagsSlideA) < len(tagsSlideB)
+		equalTags := len(lo.Intersect(tagsSlideA, tagsSlideB))
+		onlyATags := len(tagsSlideA) - equalTags
+		onlyBTags := len(tagsSlideB) - equalTags
+
+		return onlyATags+onlyBTags+equalTags/3 > 1
 	})
 
 	// for i := 0; i < len(photoList); i++ {
