@@ -15,6 +15,11 @@ type Config struct {
 	photosMap map[int]*Photo
 }
 
+type SlideShow struct {
+	nSlides int
+	slides  [][]int
+}
+
 func buildInput(inputSet string) *Config {
 	lines := splitNewLines(inputSet)
 	configLine := splitSpaces(lines[0])
@@ -28,9 +33,9 @@ func buildInput(inputSet string) *Config {
 	}
 
 	for i := 0; i < nPhotos; i++ {
-		id := i + 1
-		photoLine := lines[id]
-		fmt.Printf(">>>> %s\n", photoLine)
+		id := i
+		indexInFile := i + 1
+		photoLine := lines[indexInFile]
 		photoConfig := splitSpaces(photoLine)
 
 		ntags := toint(photoConfig[1])
@@ -49,6 +54,17 @@ func buildInput(inputSet string) *Config {
 	return config
 }
 
-func buildOutput(result int) string {
-	return "42"
+func buildOutput(result *SlideShow) string {
+	nSlides := len(result.slides)
+	output := ""
+	output += fmt.Sprintf("%d\n", nSlides)
+	for _, slide := range result.slides {
+		if len(slide) == 1 {
+			output += fmt.Sprintf("%d\n", slide[0])
+		} else {
+			output += fmt.Sprintf("%d %d\n", slide[0], slide[1])
+		}
+	}
+
+	return output
 }

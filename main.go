@@ -8,11 +8,11 @@ import (
 func main() {
 	files := []string{
 		"a",
-		// "b",
-		// "c",
-		// "d",
-		// "e",
-		// "f",
+		"b",
+		"c",
+		"d",
+		"e",
+		"f",
 	}
 
 	for _, fileName := range files {
@@ -20,7 +20,7 @@ func main() {
 		inputSet := readFile(fmt.Sprintf("./inputFiles/%s.in", fileName))
 
 		config := buildInput(inputSet)
-		fmt.Printf("CONFIG %+v\n", config)
+		// fmt.Printf("CONFIG %+v\n", config)
 		printInputMetrics(config)
 
 		result := algorithm(config)
