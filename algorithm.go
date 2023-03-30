@@ -2,8 +2,6 @@ package main
 
 import (
 	"sort"
-
-	"github.com/samber/lo"
 )
 
 func algorithm(
@@ -12,31 +10,25 @@ func algorithm(
 
 	photoList := config.photoList
 
-	// sort.Slice(photoList, func(a, b int) bool {
-	// 	photoA := photoList[a]
-	// 	photoB := photoList[b]
+	sort.Slice(photoList, func(a, b int) bool {
+		photoA := photoList[a]
+		photoB := photoList[b]
 
-	// 	if photoA.Layout == "H" && photoB.Layout == "H" {
-	// 		return true
-	// 	}
+		if photoA.Layout == "H" && photoB.Layout == "H" {
+			return true
+		}
 
-	// 	if photoA.Layout == "H" && photoB.Layout == "V" {
-	// 		return true
-	// 	}
-	// 	return false
-	// })
+		if photoA.Layout == "H" && photoB.Layout == "V" {
+			return true
+		}
+		return false
+	})
 
 	sort.Slice(photoList, func(i, j int) bool {
 		tagsPhotoA := photoList[i].Tags
 		tagsPhotoB := photoList[j].Tags
 
-		tagIntersection := lo.Intersect(tagsPhotoA, tagsPhotoB)
-		tagDiffA, tagDiffB := lo.Difference(tagsPhotoA, tagsPhotoB)
-
-		ntagIntersection := len(tagIntersection)
-		ntagDiffA := len(tagDiffA)
-		ntagDiffB := len(tagDiffB)
-		return photoA < photoB
+		return len(tagsPhotoA) < len(tagsPhotoB)
 	})
 
 	slideShow := SlideShow{
