@@ -7,6 +7,7 @@ type Photo struct {
 	Layout string
 	Tags   []string
 	NTags  int
+	Score  int
 }
 
 type Config struct {

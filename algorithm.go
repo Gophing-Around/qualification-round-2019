@@ -25,10 +25,10 @@ func algorithm(
 	})
 
 	sort.Slice(photoList, func(i, j int) bool {
-		tagsPhotoA := photoList[i].Tags
-		tagsPhotoB := photoList[j].Tags
+		photoA := photoList[i]
+		photoB := photoList[j]
 
-		return len(tagsPhotoA) < len(tagsPhotoB)
+		return photoA.Score < photoB.Score
 	})
 
 	slideShow := SlideShow{
