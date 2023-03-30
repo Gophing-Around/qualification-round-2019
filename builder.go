@@ -1,13 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type Photo struct {
-	ID     int
-	Layout string
-	Tags   []string
-	NTags  int
-	Score  int
+	ID            int
+	Layout        string
+	Tags          []string
+	NTags         int
+	Score         int
+	ScoreFloating float64
 }
 
 type Config struct {
@@ -52,21 +56,38 @@ func buildInput(inputSet string) *Config {
 		config.photosMap[id] = &photo
 	}
 
+	tagsScoresFloating := make(map[string]float64)
 	tagsScores := make(map[string]int)
 	for _, photo := range config.photoList {
 		for _, tag := range photo.Tags {
 			tagScore, _ := tagsScores[tag]
 			tagScore++
 			tagsScores[tag] = tagScore
+
+			tagScoreFloating, _ := tagsScoresFloating[tag]
+			tagScoreFloating += (float64(1) / float64(len(config.photoList)))
+			tagsScoresFloating[tag] = tagScoreFloating
 		}
 	}
 
 	for _, photo := range config.photoList {
+		photoThreshold := 0.0
 		photoScore := 0
 		for _, tag := range photo.Tags {
 			tagScore := tagsScores[tag]
 			photoScore += tagScore
+
+			tagScoreFloating := tagsScoresFloating[tag]
+			if tagScoreFloating > 0.5 {
+				photoThreshold++
+			} else {
+				photoThreshold--
+			}
+
+			photoScore += tagScore
 		}
+
+		photo.ScoreFloating = 100 - math.Abs(float64(photoThreshold))
 		photo.Score = (photoScore / photo.NTags)
 		// fmt.Printf("PHOTO#%d - score %d tags: %d\n", id, photo.Score, photo.NTags)
 	}
